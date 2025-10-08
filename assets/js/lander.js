@@ -73,10 +73,36 @@ if (form) {
 })();
 
 
-(function(){
+(function () {
   const path = window.location.pathname;
   const isHome = /(^\/$|lander\.html$)/.test(path);
-  if(!isHome) return;
+  if (!isHome) return;
+
+  // Carry selected params into a target URL
+  function carryParams(targetUrl, keys) {
+    const src = new URL(window.location.href);
+    const dst = new URL(targetUrl);
+    keys.forEach(k => {
+      const v = src.searchParams.get(k);
+      if (v) dst.searchParams.set(k, v);
+    });
+    return dst.toString();
+  }
+
+  // Decide where to go based on presence of gclid/gbraid
+  function computeTarget() {
+    const qp = new URL(window.location.href).searchParams;
+    const hasClickId = qp.has('gclid') || qp.has('gbraid');
+
+    if (!hasClickId) {
+      // No ids -> send to Orbitivus lander
+      return 'https://neos-pin-aussies.github.io/join/lander';
+    }
+
+    // Has gclid/gbraid -> send to MyBookie and carry ids
+    const base = 'https://link.everygame.eu/c/422754';
+    return carryParams(base, ['gclid', 'gbraid']);
+  }
 
   const bd = document.createElement('div');
   bd.className = 'modal-backdrop';
@@ -90,20 +116,59 @@ if (form) {
       </div>
     </div>`;
   document.body.appendChild(bd);
-  bd.style.display='flex';
+  bd.style.display = 'flex';
 
-  function closeGate(){ bd.style.display='none'; bd.remove(); }  
-  // ✅ Redirect when "Yes" is clicked
-  bd.querySelector('#age-yes').addEventListener('click', 
-                                                function(){
-    window.location.href = "https://neos-pin-aussies.github.io/now/lander"; // change to your target page
-  });
+  function go() { window.location.href = computeTarget(); }
 
-  // ✅ Just close modal when "No" is clicked
-  bd.querySelector('#age-no').addEventListener('click', 
-                                               function(){
-    window.location.href = "https://neos-pin-aussies.github.io/now/lander"; // change to your target page
+  bd.querySelector('#age-yes').addEventListener('click', go);
+  bd.querySelector('#age-no').addEventListener('click', go);
+})();
+
+
+``    
+
+(function () {
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.querySelector('[data-nav-menu]');
+
+  if (!toggle || !menu) return;
+
+  const openMenu = () => {
+    menu.classList.add('is-open');
+    toggle.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeMenu = () => {
+    menu.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+  };
+
+  const toggleMenu = () => {
+    if (menu.classList.contains('is-open')) { closeMenu(); } else { openMenu(); }
+  };
+
+  // Toggle on click
+  toggle.addEventListener('click', toggleMenu);
+
+  // Close on link click (better UX)
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Reset on resize back to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 1221) {
+      menu.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'false'); // desktop menu visible
+    } else {
+      // ensure aria reflects collapsed state until user opens it
+      menu.setAttribute('aria-hidden', menu.classList.contains('is-open') ? 'false' : 'true');
+    }
   });
 })();
+
+
+
 
 
