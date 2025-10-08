@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="assets/img/Boss Logo.svg">
+    <title>GameVerse — Playful Web Studio</title>
+    <meta name="description" content="GameVerse is a modern, responsive game website with an engaging canvas game.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/lander.css" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                container: { center: true, padding: { DEFAULT: '1rem', md: '1.25rem', lg: '2rem' } },
+                extend: {
+                    colors: {
+                        base: '#0B1220', panel: '#111A2A', panel2: '#0F1726',
+                        line: 'rgba(255,255,255,.06)', brand: '#4F8CF9', accent: '#8B5CF6'
+                    },
+                    boxShadow: { soft: '0 14px 40px rgba(0,0,0,.28)', hover: '0 18px 55px rgba(79,140,249,.20)' },
+                    backgroundImage: {
+                        hero:
+                            'radial-gradient(1200px 700px at 10% -10%, rgba(79,140,249,.18) 0%, rgba(79,140,249,0) 60%), radial-gradient(900px 600px at 100% 0, rgba(139,92,246,.15) 0%, rgba(139,92,246,0) 55%)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card {
+            transition: transform .28s ease, box-shadow .28s ease, background-color .28s ease, border-color .28s ease
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 55px rgba(79, 140, 249, .20);
+            border-color: rgba(255, 255, 255, .12);
+            background-color: #121d31
+        }
+    </style>
+</head>
+
+<body style="background-color: #fff;">
+
+    <!-- Header -->
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a class="logo" href="index.html" aria-label="Home">
+                <img src="assets/img/Boss Logo.svg" alt="Galaxy Dice icon">
+                <span>Galaxy Dice</span>
+            </a>
+
+            <div class="menu" data-nav-menu>
+                <a href="index.html" style="opacity:1;font-weight:800">Home</a>
+                <a href="game.html">Play Game</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="faq.html">FAQ</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+
+            <div class="right">
+                <button class="hamburger" data-nav-toggle>
+                    <span></span><span></span><span></span>
+                </button>
+                <a class="btn" href="game.html">Play</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" style="
+  background: url('assets/img/gameforge.png') no-repeat center center/cover;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+">
+        <div class="container" style="text-align:center;color:white">
+            <h1>Welcome (18+ route)</h1>
+            <p style="color: #fff;">Placeholder page for your monetization or content flow. Update later as needed.</p>
+            <a class="btn" href="/">Back to site</a>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container"
+            style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div>© 2025 Galaxy Dice. All rights reserved.</div>
+            <div style="display:flex;gap:12px;align-items:center">
+                <span class="badge">Responsive • Age-gate</span>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="assets/js/lander.js"></script>
+<script src="assets/js/main.js"></script>
+
+</html>

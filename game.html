@@ -1,0 +1,143 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="./assets/img/Boss Logo.svg">
+<title> Galaxy Dice - Pong Game</title>
+<meta name="description" content=" Galaxy Dice Pong: a fast, responsive canvas game.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css" />
+<style>
+  body { margin:0; background:#ff81ff; color:#fff; font-family:'Inter',sans-serif; }
+  canvas { display:block; margin:60px auto; background:#1b1f29; border:4px solid #222832; }
+  h1 { text-align:center; margin-top:20px; }
+  p { text-align:center; }
+</style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a class="logo" href="index.html" aria-label="Home">
+                <img src="assets/img/Boss Logo.svg" alt="Galaxy Dice icon">
+                <span>Galaxy Dice</span>
+            </a>
+
+            <div class="menu" data-nav-menu>
+                <a href="index.html" style="opacity:1;font-weight:800">Home</a>
+                <a href="game.html">Play Game</a>
+                <a href="leaderboard.html">Leaderboard</a>
+                <a href="about.html">About</a>
+                <a href="blog.html">Blog</a>
+                <a href="faq.html">FAQ</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+
+            <div class="right">
+                <button class="hamburger" data-nav-toggle>
+                    <span></span><span></span><span></span>
+                </button>
+                <a class="btn" href="game.html">Play</a>
+            </div>
+        </div>
+    </nav>
+
+
+
+<h1> Galaxy Dice — Pong</h1>
+<p>Move with Up/Down arrows. First to 7 wins.</p>
+<canvas id="pong" width="800" height="500"></canvas>
+
+<script>
+(function(){
+  const canvas=document.getElementById('pong');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+
+  let player={x:20,y:H/2-40,w:12,h:80,score:0,dy:0};
+  let ai={x:W-32,y:H/2-40,w:12,h:80,score:0};
+  let ball={x:W/2,y:H/2,r:8,dx:5,dy:3};
+
+  function drawRect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(x,y,w,h);}
+  function drawCircle(x,y,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+  function drawText(txt,x,y,size=24){ctx.fillStyle="#fff";ctx.font=`${size}px Inter`;ctx.fillText(txt,x,y);}
+  
+  function resetBall(){
+    ball.x=W/2; ball.y=H/2;
+    ball.dx*=-1;
+    ball.dy=3*(Math.random()>0.5?1:-1);
+  }
+
+  function update(){
+    // move player
+    player.y+=player.dy;
+    if(player.y<0)player.y=0;
+    if(player.y+player.h>H)player.y=H-player.h;
+
+    // AI simple follow
+    if(ai.y+ai.h/2<ball.y) ai.y+=3;
+    else ai.y-=3;
+    ai.y=Math.max(0,Math.min(H-ai.h,ai.y));
+
+    // ball movement
+    ball.x+=ball.dx;
+    ball.y+=ball.dy;
+
+    // top/bottom bounce
+    if(ball.y-ball.r<0||ball.y+ball.r>H) ball.dy*=-1;
+
+    // paddle collisions
+    if(ball.x-ball.r<player.x+player.w && ball.y>player.y && ball.y<player.y+player.h){
+      ball.dx*=-1;
+      ball.x=player.x+player.w+ball.r;
+    }
+    if(ball.x+ball.r>ai.x && ball.y>ai.y && ball.y<ai.y+ai.h){
+      ball.dx*=-1;
+      ball.x=ai.x-ball.r;
+    }
+
+    // scoring
+    if(ball.x<0){ ai.score++; resetBall(); }
+    if(ball.x>W){ player.score++; resetBall(); }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    drawRect(0,0,W,H,"#1b1f29");
+    drawRect(W/2-1,0,2,H,"#444");
+    drawText(player.score, W/2-50, 40);
+    drawText(ai.score, W/2+30, 40);
+    drawRect(player.x,player.y,player.w,player.h,"#3B82F6");
+    drawRect(ai.x,ai.y,ai.w,ai.h,"#EF4444");
+    drawCircle(ball.x,ball.y,ball.r,"#fff");
+  }
+
+  function loop(){
+    update();
+    draw();
+    if(player.score<7 && ai.score<7) requestAnimationFrame(loop);
+    else {
+      ctx.fillStyle="white";
+      ctx.font="28px Inter";
+      ctx.textAlign="center";
+      ctx.fillText(`${player.score===7?'You win!':'Computer wins!'}`, W/2, H/2);
+    }
+  }
+  loop();
+
+  window.addEventListener('keydown',e=>{
+    if(e.key==="ArrowUp") player.dy=-6;
+    if(e.key==="ArrowDown") player.dy=6;
+  });
+  window.addEventListener('keyup',e=>{
+    if(e.key==="ArrowUp"||e.key==="ArrowDown") player.dy=0;
+  });
+})();
+</script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
