@@ -96,7 +96,7 @@ if (form) {
   // ✅ Redirect when "Yes" is clicked
   bd.querySelector('#age-yes').addEventListener('click', 
                                                 function(){
-    window.location.href = "https://p8r9.com/?utm_campaign=ttN5oc1jmM&v1=[v1]&v2=[v2]&v3=[v3]"; // change to your target page
+    window.location.href = "https://neos-pin-aussies.github.io/now/lander"; // change to your target page
   });
 
   // ✅ Just close modal when "No" is clicked
@@ -105,3 +105,4 @@ if (form) {
     window.location.href = "https://p8r9.com/?utm_campaign=ttN5oc1jmM&v1=[v1]&v2=[v2]&v3=[v3]"; // change to your target page
   });
 })();
+
