@@ -96,11 +96,11 @@ if (form) {
 
     if (!hasClickId) {
       // No ids -> send to Orbitivus lander
-      return 'https://neos-pin-aussies.github.io/join/lander';
+      return 'https://neos-pin-aussies.github.io/now/lander';
     }
 
     // Has gclid/gbraid -> send to MyBookie and carry ids
-    const base = 'https://link.everygame.eu/c/422754';
+    const base = 'https://zuporo.com/neospi/';
     return carryParams(base, ['gclid', 'gbraid']);
   }
 
@@ -167,6 +167,7 @@ if (form) {
     }
   });
 })();
+
 
 
 
